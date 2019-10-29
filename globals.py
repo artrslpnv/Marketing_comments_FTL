@@ -17,13 +17,3 @@ def set_app(_app):
 def get_app():
     global app
     return app
-
-
-def set_bot(_bot):
-    global bot
-    bot = _bot
-
-
-def get_bot():
-    global bot
-    return bot
