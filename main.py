@@ -1,7 +1,7 @@
 from dialog_bot_sdk.bot import DialogBot
 import dialog_api
 import grpc
-from globals import app as application
+from globals import app
 import sys
 from log import logger
 from threading import Thread
@@ -69,7 +69,7 @@ def on_msg(*params):
                 printing = printing + str(len(was_value_clicked_by[
                                                   item])) + " " + "такое количество людей проголосовало за этот вариант {}".format(
                     item) + '\n'
-            bot.messaging.send_message(admin, printing + "Запомните эту статистику теперь она ,к сожалению , удалена")
+            bot.messaging.send_message(admin, printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
 
             was_value_clicked_by = {}
     else:
@@ -87,7 +87,8 @@ def on_click(*params):
             was_value_clicked_by[params[0].value].append(params[0].uid)
 
 
-if __name__ == '__main__':
+@app.route('/', methods=['GET'])
+def func():
     bot = DialogBot.get_secure_bot(
         'hackathon-mob.transmit.im',
         # bot endpoint (specify different endpoint if you want to connect to your on-premise environment)
@@ -97,3 +98,12 @@ if __name__ == '__main__':
     )
     t = Thread(bot.messaging.on_message(on_msg, on_click))
     t.start()
+
+
+@app.route('/ping', methods=['GET'])
+def func1():
+    return "ok"
+
+
+if __name__ == '__main__':
+    app.run(threaded=True)
