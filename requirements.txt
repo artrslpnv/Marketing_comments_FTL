@@ -1,2 +1,4 @@
 grpcio
 dialog_bot_sdk
+flask
+requests
