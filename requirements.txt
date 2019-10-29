@@ -1,2 +1,2 @@
-dialog_bot_sdk
 grpcio
+dialog_bot_sdk
