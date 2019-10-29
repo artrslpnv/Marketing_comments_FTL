@@ -14,9 +14,11 @@ was_value_clicked_by={}
 def on_msg(*params):
     print('on msg', params)
     if params[0].message.textMessage.text=='привет':
-        bot.messaging.send_message(params[0].peer,"Добрый день , я бот , собирающий данные по опросам ,чтобы создать опрос напишите название опроса и варианты ответа в формате: \n"
-                                                 + "/create;Название опроса;Первый Вариант;Второй Вариант;и тд"+"\n"+"для получения  отчета напишите: /stats")
-    if params[0].message.textMessage.text.find('/create')!=-1:
+        bot.messaging.send_message(params[0].peer,
+                                   "Добрый день , я бот , собирающий данные по опросам ,чтобы создать опрос напишите название опроса и варианты ответа в формате: \n"
+                                   + "/create;Название опроса;Первый Вариант;Второй Вариант;и тд" + "\n" +
+                                   "для получения  отчета напишите: /stats (cчитается, что один человек голосует не более 1 раза за каждыый из вариантов")
+    if params[0].message.textMessage.text.find('/create') != -1:
         global admin
         admin=params[0].peer
         list=params[0].message.textMessage.text.split(';')
@@ -52,11 +54,14 @@ def on_msg(*params):
              massive_of_buttons
              )]
                 )
-        if params[0].find('/stats'):
+    if params[0].message.textMessage.text.find('/stats')!=-1:
             printing=""
-            for item in was_value_clicked_by.keys:
-              printing+'voted for this {}'.format(item)+ str(len(was_value_clicked_by[item]))+'\n'
-            bot.messaging.send_message(admin,printing)
+            global was_value_clicked_by
+            print(was_value_clicked_by)
+            for item in was_value_clicked_by.keys():
+              printing=printing+str(len(was_value_clicked_by[item]))+" " +"такое количество людей проголосовало за этот вариант {}".format(item)+'\n'
+            bot.messaging.send_message(admin,printing+"Запомните эту статистику теперь она удалена")
+            was_value_clicked_by={}
 
 def on_click(*params):
     a=set();#считаем голос одного юзера только 1 раз
