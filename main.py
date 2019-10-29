@@ -9,9 +9,15 @@ from dialog_bot_sdk import interactive_media
 from dialog_bot_sdk.entity_manager import DEFAULT_OPTIMIZATIONS
 from dialog_bot_sdk.internal.peers import group_peer, private_peer
 
+bot = DialogBot.get_secure_bot(
+    'hackathon-mob.transmit.im',
+    # bot endpoint (specify different endpoint if you want to connect to your on-premise environment)
+    grpc.ssl_channel_credentials(),  # SSL credentials (empty by default!)
+    '592e37a534ced85ee9f06561dce1b3e1985f94f2',  # bot token
+    verbose=False  # optional parameter, when it's True bot prints info about the called methods, False by default
+)
 admin = ''
 was_value_clicked_by = {}
-
 
 def on_msg(*params):
     print('on msg', params)
@@ -89,13 +95,6 @@ def on_click(*params):
 
 @app.route('/', methods=['GET'])
 def func():
-    bot = DialogBot.get_secure_bot(
-        'hackathon-mob.transmit.im',
-        # bot endpoint (specify different endpoint if you want to connect to your on-premise environment)
-        grpc.ssl_channel_credentials(),  # SSL credentials (empty by default!)
-        '592e37a534ced85ee9f06561dce1b3e1985f94f2',  # bot token
-        verbose=False  # optional parameter, when it's True bot prints info about the called methods, False by default
-    )
     t = Thread(bot.messaging.on_message(on_msg, on_click))
     t.start()
 
