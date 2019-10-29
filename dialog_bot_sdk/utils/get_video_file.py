@@ -1,4 +1,4 @@
-import cv2
+
 import mimetypes
 
 
@@ -8,9 +8,8 @@ def get_video_w_h(file):
     :param file: path to video
     :return: width, height
     """
-    vid = cv2.VideoCapture(file)
-    height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = 1080
+    width = 540
     return width, height
 
 
