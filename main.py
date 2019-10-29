@@ -74,7 +74,7 @@ def on_msg(*params):
                                            printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
                 was_value_clicked_by = {}
         else :
-            bot.messaging.send_message(params[0].peer,"нельзя просмотреть статистику , так как вы не отправляли опросов или вы не админ")
+            bot.messaging.send_message(params[0].peer,"Нельзя просмотреть статистику , так как вы не отправляли опросов или вы не админ")
     else:
         bot.messaging.send_message(params[0].peer, "я не поддерживаю эту команду")
 
