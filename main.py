@@ -13,12 +13,12 @@ was_value_clicked_by={}
 
 def on_msg(*params):
     print('on msg', params)
-    if params[0].message.textMessage.text=='привет':
+    if params[0].message.textMessage.text=='привет' or params[0].message.textMessage.text=='/start' :
         bot.messaging.send_message(params[0].peer,
                                    "Добрый день , я бот , собирающий данные по опросам ,чтобы создать опрос напишите название опроса и варианты ответа в формате: \n"
                                    + "/create;Название опроса;Первый Вариант;Второй Вариант;и тд" + "\n" +
-                                   "для получения  отчета напишите: /stats (cчитается, что один человек голосует не более 1 раза за каждый из вариантов")
-    if params[0].message.textMessage.text.find('/create') != -1:
+                                   "для получения  отчета напишите: /stats (!!cчитается, что голос одного человека учитывается не более 1 раза за каждый из вариантов!!)")
+    elif params[0].message.textMessage.text.find('/create') != -1:
         global admin
         admin=params[0].peer
         list=params[0].message.textMessage.text.split(';')
@@ -54,15 +54,21 @@ def on_msg(*params):
              massive_of_buttons
              )]
                 )
-    if params[0].message.textMessage.text.find('/stats')!=-1:
+    elif params[0].message.textMessage.text.find('/stats')!=-1:
             printing=""
             global was_value_clicked_by
             print(was_value_clicked_by)
-            for item in was_value_clicked_by.keys():
-              printing=printing+str(len(was_value_clicked_by[item]))+" " +"такое количество людей проголосовало за этот вариант {}".format(item)+'\n'
-            bot.messaging.send_message(admin,printing+"Запомните эту статистику теперь она ,к сожалению ,удалена")
+            if len(was_value_clicked_by.keys())==0:
+                bot.messaging.send_message(admin,
+                                           "нет активных опросов")
+            else:
+                for item in was_value_clicked_by.keys():
+                    printing=printing+str(len(was_value_clicked_by[item]))+" " +"такое количество людей проголосовало за этот вариант {}".format(item)+'\n'
+                bot.messaging.send_message(admin,printing+"Запомните эту статистику теперь она ,к сожалению ,удалена")
 
-            was_value_clicked_by={}
+                was_value_clicked_by={}
+    else:
+        bot.messaging.send_message(params[0].peer, "я не поддерживаю эту команду")
 
 def on_click(*params):
     a=set();#считаем голос одного юзера только 1 раз
