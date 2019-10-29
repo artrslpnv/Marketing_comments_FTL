@@ -73,7 +73,7 @@ def on_msg(*params):
         else:
             for item in was_value_clicked_by.keys():
                 printing = printing + str(len(was_value_clicked_by[
-                                                  item])) + " " + "такое количество людей проголосовало за этот вариант {}".format(
+                                                  item])) + " " + "такое количество людей  проголосовало за этот вариант {}".format(
                     item) + '\n'
             bot.messaging.send_message(admin, printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
 
