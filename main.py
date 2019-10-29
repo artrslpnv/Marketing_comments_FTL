@@ -12,6 +12,7 @@ admin=''
 was_value_clicked_by = {}
 
 def on_msg(*params):
+    global was_value_clicked_by
     print('on msg', params)
     if params[0].message.textMessage.text == 'привет' or params[0].message.textMessage.text == '/start':
         bot.messaging.send_message(params[0].peer,
@@ -61,7 +62,6 @@ def on_msg(*params):
     elif params[0].message.textMessage.text == '/stats':
         if params[0].peer == admin:
             printing = ""
-            global was_value_clicked_by
             print(was_value_clicked_by)
             if len(was_value_clicked_by.keys()) == 0:
                 bot.messaging.send_message(admin,
