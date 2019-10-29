@@ -82,7 +82,7 @@ def on_msg(*params):
 def on_click(*params):
     a = set();  # считаем голос одного юзера только 1 раз
     global was_value_clicked_by
-    print(params[0].uid)
+    print(params[0].id)
     if not params[0].value in was_value_clicked_by:
         was_value_clicked_by[params[0].value] = [params[0].uid]
     else:
