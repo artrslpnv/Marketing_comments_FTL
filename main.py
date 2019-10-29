@@ -8,15 +8,7 @@ from threading import Thread
 from dialog_bot_sdk import interactive_media
 from dialog_bot_sdk.entity_manager import DEFAULT_OPTIMIZATIONS
 from dialog_bot_sdk.internal.peers import group_peer, private_peer
-
-bot = DialogBot.get_secure_bot(
-    'hackathon-mob.transmit.im',
-    # bot endpoint (specify different endpoint if you want to connect to your on-premise environment)
-    grpc.ssl_channel_credentials(),  # SSL credentials (empty by default!)
-    '592e37a534ced85ee9f06561dce1b3e1985f94f2',  # bot token
-    verbose=False  # optional parameter, when it's True bot prints info about the called methods, False by default
-)
-admin = ''
+admins = []
 was_value_clicked_by = {}
 
 def on_msg(*params):
@@ -25,7 +17,9 @@ def on_msg(*params):
         bot.messaging.send_message(params[0].peer,
                                    "Добрый день , я бот , собирающий данные по опросам ,чтобы создать опрос напишите название опроса и варианты ответа в формате: \n"
                                    + "/create;Название опроса;Первый Вариант;Второй Вариант;и тд" + "\n" +
-                                   "для получения  отчета напишите: /stats (!!cчитается, что голос одного человека учитывается не более 1 раза за каждый из вариантов!!)")
+                                   "для получения  отчета напишите: /stats (Внимание человек ,отправивший запрос на отправку опроса и только он может получить данные по запросу" + "\n"
+                                   + "(!!из соображений логики, cчитается, что голос одного человека учитывается не более 1 раза за каждый из вариантов!!)" + "\n" +
+                                   "/stats возвращает общую статистику по опросам а именно , cколько людей проголосовали за какой вариант.")
     elif params[0].message.textMessage.text.find('/create') != -1:
         global admin
         admin = params[0].peer
@@ -63,21 +57,24 @@ def on_msg(*params):
                     massive_of_buttons
                 )]
             )
-    elif params[0].message.textMessage.text.find('/stats') != -1:
-        printing = ""
-        global was_value_clicked_by
-        print(was_value_clicked_by)
-        if len(was_value_clicked_by.keys()) == 0:
-            bot.messaging.send_message(admin,
-                                       "нет активных опросов")
-        else:
-            for item in was_value_clicked_by.keys():
-                printing = printing + str(len(was_value_clicked_by[
-                                                  item])) + " " + "такое количество людей  проголосовало за этот вариант {}".format(
-                    item) + '\n'
-            bot.messaging.send_message(admin, printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
-
-            was_value_clicked_by = {}
+    elif params[0].message.textMessage.text == '/stats':
+        if params[0].peer == admin:
+            printing = ""
+            global was_value_clicked_by
+            print(was_value_clicked_by)
+            if len(was_value_clicked_by.keys()) == 0:
+                bot.messaging.send_message(admin,
+                                           "нет активных опросов")
+            else:
+                for item in was_value_clicked_by.keys():
+                    printing = printing + str(len(was_value_clicked_by[
+                                                      item])) + " " + "такое количество людей  проголосовало за этот вариант {}".format(
+                        item) + '\n'
+                bot.messaging.send_message(admin,
+                                           printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
+                was_value_clicked_by = {}
+        else :
+            bot.messaging.send_message(params[0].peer,"Вам нельзя просматривать статистику , так как вы не админ")
     else:
         bot.messaging.send_message(params[0].peer, "я не поддерживаю эту команду")
 
@@ -91,18 +88,6 @@ def on_click(*params):
     else:
         if not params[0].uid in was_value_clicked_by[params[0].value]:
             was_value_clicked_by[params[0].value].append(params[0].uid)
-
-
-# @app.route('/', methods=['GET'])
-# def func():
-#     t = Thread(bot.messaging.on_message(on_msg, on_click))
-#     t.start()
-#
-#
-# @app.route('/ping', methods=['GET'])
-# def func1():
-#     return "ok"
-
 
 if __name__ == '__main__':
     #app.run(threaded=True)
