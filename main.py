@@ -8,7 +8,7 @@ from threading import Thread
 from dialog_bot_sdk import interactive_media
 from dialog_bot_sdk.entity_manager import DEFAULT_OPTIMIZATIONS
 from dialog_bot_sdk.internal.peers import group_peer, private_peer
-admins = []
+admin=''
 was_value_clicked_by = {}
 
 def on_msg(*params):
