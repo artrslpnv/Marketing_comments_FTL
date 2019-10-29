@@ -93,16 +93,25 @@ def on_click(*params):
             was_value_clicked_by[params[0].value].append(params[0].uid)
 
 
-@app.route('/', methods=['GET'])
-def func():
-    t = Thread(bot.messaging.on_message(on_msg, on_click))
-    t.start()
-
-
-@app.route('/ping', methods=['GET'])
-def func1():
-    return "ok"
+# @app.route('/', methods=['GET'])
+# def func():
+#     t = Thread(bot.messaging.on_message(on_msg, on_click))
+#     t.start()
+#
+#
+# @app.route('/ping', methods=['GET'])
+# def func1():
+#     return "ok"
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    #app.run(threaded=True)
+    bot = DialogBot.get_secure_bot(
+        'hackathon-mob.transmit.im',
+        # bot endpoint (specify different endpoint if you want to connect to your on-premise environment)
+        grpc.ssl_channel_credentials(),  # SSL credentials (empty by default!)
+        '592e37a534ced85ee9f06561dce1b3e1985f94f2',  # bot token
+        verbose=False  # optional parameter, when it's True bot prints info about the called methods, False by default
+    )
+    t = Thread(bot.messaging.on_message(on_msg, on_click))
+    t.start()
