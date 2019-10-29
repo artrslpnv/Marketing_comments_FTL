@@ -1,4 +1,10 @@
 grpcio
-dialog_bot_sdk
 flask
 requests
+pyOpenSSL
+protobuf
+gcloud
+google-api-python-client
+pillow
+opencv-python
+dialog-api
