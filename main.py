@@ -3,7 +3,7 @@ import grpcio
 from globals import app as application
 import sys
 from log import logger
-
+from threading import Thread
 def on_msg(*params):
     print('on msg', params)
     bot.messaging.send_message(
@@ -20,4 +20,5 @@ if __name__ == '__main__':
         '592e37a534ced85ee9f06561dce1b3e1985f94f2',  # bot token
         verbose=False # optional parameter, when it's True bot prints info about the called methods, False by default
     )
-    bot.messaging.on_message(on_msg)
+    t=Thread(bot.messaging.on_message(on_msg))
+    t.start()
