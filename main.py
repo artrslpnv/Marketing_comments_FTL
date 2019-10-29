@@ -33,6 +33,7 @@ def on_msg(*params):
                                                                          , interactive_media.InteractiveMediaButton(
                     variants[i], variants[i])
                                                                          ))
+            was_value_clicked_by[variants[i]]=[]
         req = dialog_api.messaging_pb2.RequestLoadDialogs(
             min_date=0,
             limit=20,
