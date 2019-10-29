@@ -58,9 +58,6 @@ def on_msg(*params):
                 )]
             )
     elif params[0].message.textMessage.text == '/stats':
-        if admin=='':
-            bot.messaging.send_message(params[0].peer,
-                                       "нет активных опросов")
         if params[0].peer == admin:
             printing = ""
             global was_value_clicked_by
@@ -77,7 +74,7 @@ def on_msg(*params):
                                            printing + "Запомните эту статистику теперь она ,к сожалению ,удалена")
                 was_value_clicked_by = {}
         else :
-            bot.messaging.send_message(params[0].peer,"Вам нельзя просматривать статистику , так как вы не админ")
+            bot.messaging.send_message(params[0].peer,"Вам нельзя просматривать статистику , так как вы не отправляли этот опрос")
     else:
         bot.messaging.send_message(params[0].peer, "я не поддерживаю эту команду")
 
